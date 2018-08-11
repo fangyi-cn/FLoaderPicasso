@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.fycmd.imageloader.floaderlib.LoaderUtils;
+import com.fycmd.imageloader.floaderlib.FLoader;
 import com.fycmd.imageloader.floaderlib.base.FTransformation;
 import com.fycmd.imageloader.floaderlib.base.ILoaderFactory;
 import com.fycmd.imageloader.floaderlib.base.LoaderBuilder;
@@ -25,13 +25,13 @@ import java.io.File;
 public class PicassoLoader implements ILoaderFactory {
     private volatile static Picasso sPicassoSingleton;
     private final String PICASSO_CACHE = "picasso-cache";
-    private static LruCache sLruCache = new LruCache(LoaderUtils.getInstance().getContext());
+    private static LruCache sLruCache = new LruCache(FLoader.getInstance().getContext());
 
     private static Picasso getPicasso() {
         if (sPicassoSingleton == null) {
             synchronized (PicassoLoader.class) {
                 if (sPicassoSingleton == null) {
-                    sPicassoSingleton = new Picasso.Builder(LoaderUtils.getInstance().getContext()).memoryCache(sLruCache).build();
+                    sPicassoSingleton = new Picasso.Builder(FLoader.getInstance().getContext()).memoryCache(sLruCache).build();
                 }
             }
         }
@@ -45,7 +45,7 @@ public class PicassoLoader implements ILoaderFactory {
 
     @Override
     public void clearDiskCache() {
-        File diskFile = new File(LoaderUtils.getInstance().getContext().getCacheDir(), PICASSO_CACHE);
+        File diskFile = new File(FLoader.getInstance().getContext().getCacheDir(), PICASSO_CACHE);
         if (diskFile.exists()) {
             //这边自行写删除代码
             // FileUtil.deleteFile(diskFile);
